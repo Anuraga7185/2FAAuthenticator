@@ -73,6 +73,7 @@ public class OTPGenerateActivity extends AppCompatActivity {
     private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(), result -> {
         if (result.getContents() != null) {
             Map<String, String> authenticationDetails = TOTPUtil.infoExtract(result.getContents());
+
             AuthenticationDetail authDetail = new AuthenticationDetail();
             authDetail.displayName = authenticationDetails.getOrDefault("displayName", "");
             authDetail.secretKey = authenticationDetails.getOrDefault("secretKey", "");

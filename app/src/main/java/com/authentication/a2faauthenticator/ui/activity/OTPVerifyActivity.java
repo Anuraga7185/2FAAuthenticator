@@ -39,18 +39,18 @@ public class OTPVerifyActivity extends AppCompatActivity {
 
     private void generateQRCode() {
         Log.d("Generated Secret Key", SECRET_KEY_VERIFY);
+        SECRET_KEY_VERIFY = TOTPUtil.textToBase32(otpVerifyActivity.editBoxSecretKey.getText().toString());  // text to base32 or base64
         if (SECRET_KEY_VERIFY.isEmpty()) {
             Toast.makeText(this, "Empty Secret Key", Toast.LENGTH_SHORT).show();
             return;
         }
         String otpFormat = TOTPUtil.constructUriFormat(otpVerifyActivity.editBoxIssuer.getText().toString(), otpVerifyActivity.editBoxDisplayName.getText().toString(), SECRET_KEY_VERIFY);
-//        String otpFormat = getString(R.string.totp_qr_format, otpVerifyActivity.editBoxIssuer.getText(), otpVerifyActivity.editBoxDisplayName.getText(), SECRET_KEY_VERIFY, otpVerifyActivity.editBoxIssuer.getText());
         BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
         try {
             Bitmap bitmap = barcodeEncoder.encodeBitmap(otpFormat, BarcodeFormat.QR_CODE, 400, 400);
             otpVerifyActivity.qrImage.setImageBitmap(bitmap);
         } catch (WriterException e) {
-            e.printStackTrace();
+            Log.d("QR GENERATION ->", "Unable to Generate QR Code ");
         }
     }
 

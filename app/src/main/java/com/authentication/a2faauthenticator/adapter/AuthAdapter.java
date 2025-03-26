@@ -1,5 +1,6 @@
 package com.authentication.a2faauthenticator.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -42,6 +43,7 @@ public class AuthAdapter extends ListAdapter<AuthenticationDetail, AuthAdapter.A
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void notifyItems() {
         notifyDataSetChanged();
     }

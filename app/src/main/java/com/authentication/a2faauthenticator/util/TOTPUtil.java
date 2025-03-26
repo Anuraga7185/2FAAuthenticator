@@ -1,13 +1,13 @@
 package com.authentication.a2faauthenticator.util;
 
-
 import android.util.Log;
+
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.codec.binary.Base32;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +33,8 @@ public class TOTPUtil {
     public static String generateOTP(String secret) {
         Log.d("TOTP UTIL  -> GENERATE OTP ", secret);
         try {
-            byte[] base64 = Base64.getDecoder().decode(secret);  // min sdk-> 26
+//            byte[] base64 = base64ToBytes(secret);
+            byte[] base64 = base32ToBytes(secret);  // although it is base32 still name set base 64 so not to make some more changes
             TimeBasedOneTimePasswordConfig timeBasedOneTimePasswordConfig = new TimeBasedOneTimePasswordConfig(TIME_STEP, TimeUnit.SECONDS, CODE_DIGITS, ALGORITHM);
             TimeBasedOneTimePasswordGenerator oneTimePasswordGenerator = new TimeBasedOneTimePasswordGenerator(base64, timeBasedOneTimePasswordConfig);
             return oneTimePasswordGenerator.generate(Instant.now());
@@ -43,10 +44,10 @@ public class TOTPUtil {
         return "";
     }
 
+
     public static Map<String, String> infoExtract(String extractedText) {
         Map<String, String> details = new HashMap<>();
-        if (extractedText == null || extractedText.isEmpty())
-            return details;
+        if (extractedText == null || extractedText.isEmpty()) return details;
 
         try {
             URI uri = new URI(extractedText);
@@ -74,20 +75,31 @@ public class TOTPUtil {
 
     }
 
-    //TODO: Generating Secret Key not working perfectly for some reason
-    public static String generateSecretKey(String userInput) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-1");
-            byte[] hash = digest.digest(userInput.getBytes(StandardCharsets.UTF_8));
-            StringBuilder base64Encoded = new StringBuilder(Base64.getEncoder().encodeToString(hash));
-            while (base64Encoded.length() < 32) {
-                base64Encoded.append("A");
-            }
-            return base64Encoded.substring(0, 32);
+    public static String textToBase64(String text) {
+        Base64.Encoder base64 = Base64.getEncoder();
+        String encodedString = base64.encodeToString(text.getBytes());
+        Log.d("TOTP UTIL  -> BASE64 ", encodedString);
+        return encodedString;
+    }
 
-        } catch (Exception e) {
-            Log.e("TOTP UTIL  ->", "Error generating secret key: " + e.getMessage());
-        }
-        return "";
+    public static String textToBase32(String text) {
+        Base32 base32 = new Base32();
+        byte[] encodedBytes = base32.encode(text.getBytes());
+        String encodedString = new String(encodedBytes);
+
+        Log.d("TOTP UTIL  -> ", "Encoded Base32: " + encodedString);
+        return encodedString;
+    }
+
+    private static byte[] base32ToBytes(String base32) {
+        Base32 base32Decoder = new Base32();
+        return base32Decoder.decode(base32.replace(" ", "").toUpperCase());  // Ensure proper decoding
+    }
+
+    public static byte[] base64ToBytes(String base64) {
+        Base64.Decoder decoder = Base64.getDecoder();
+        byte[] decodedBytes = decoder.decode(base64);
+        Log.d("TOTP UTIL  -> BASE64 ", Arrays.toString(decodedBytes) + " ");
+        return decodedBytes;
     }
 }
