@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">2FAAuthenticator</string>
+    <string name="otp_format">otpauth://totp/"+issuer+":"+displayUsername+"?secret="+%s+"&amp;issuer="+issuer+"&amp;period="+timeStep;</string>
+
+    <string name="totp_qr_format">otpauth://totp/%s:%s?secret=%s&amp;issuer=%s</string>
+    <string name="authenticator">Authenticator</string>
+</resources>
