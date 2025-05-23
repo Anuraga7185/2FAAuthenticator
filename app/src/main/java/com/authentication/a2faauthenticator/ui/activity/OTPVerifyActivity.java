@@ -1,13 +1,20 @@
 package com.authentication.a2faauthenticator.ui.activity;
 
 
+import android.app.Dialog;
 import android.graphics.Bitmap;
+import android.graphics.RenderEffect;
+import android.graphics.Shader;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.authentication.a2faauthenticator.R;
@@ -28,6 +35,10 @@ public class OTPVerifyActivity extends AppCompatActivity {
         otpVerifyActivity = OtpVerifyActivityBinding.inflate(getLayoutInflater());
         setContentView(otpVerifyActivity.getRoot());
         otpVerifyActivity.submit.setOnClickListener(this::verify);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            getWindow().getDecorView()
+                    .setRenderEffect(RenderEffect.createBlurEffect(20, 20, Shader.TileMode.CLAMP));
+        }
         otpVerifyActivity.generateQR.setOnClickListener(this::openQR);
     }
 
@@ -63,6 +74,7 @@ public class OTPVerifyActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "WRONG OTP", Toast.LENGTH_SHORT).show();
             Log.d("VERIFICATION ->", "WRONG OTP ");
+
         }
     }
 }
