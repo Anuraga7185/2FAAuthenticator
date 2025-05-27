@@ -31,7 +31,6 @@ public class TOTPUtil {
     }
 
     public static String generateOTP(String secret) {
-        Log.d("TOTP UTIL  -> GENERATE OTP ", secret);
         try {
 //            byte[] base64 = base64ToBytes(secret);
             byte[] base64 = base32ToBytes(secret);  // although it is base32 still name set base 64 so not to make some more changes
@@ -41,7 +40,7 @@ public class TOTPUtil {
         } catch (RuntimeException e) {
             Log.e("TOTP UTIL  ->", "Error generating OTP: " + e.getMessage());
         }
-        return "";
+        return null;
     }
 
 
