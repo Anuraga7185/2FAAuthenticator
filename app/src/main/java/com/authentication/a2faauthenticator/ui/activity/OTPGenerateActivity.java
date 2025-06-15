@@ -67,6 +67,7 @@ public class OTPGenerateActivity extends AppCompatActivity {
 
 
     private void openQRScanner(View view) {
+
         barcodeLauncher.launch(new ScanOptions());
     }
 
