@@ -5,6 +5,7 @@ import static com.google.common.truth.Truth.assertThat;
 import org.junit.Test;
 
 public class RegistrationUtilTest {
+
     RegistrationUtil registrationUtil = new RegistrationUtil();
 
     @Test
