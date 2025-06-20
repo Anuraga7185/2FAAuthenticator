@@ -1,0 +1,47 @@
+pipeline {
+  agent any
+
+  environment {
+    ANDROID_HOME = "/opt/android-sdk"
+    GRADLE_OPTS = "-Dorg.gradle.jvmargs=-Xmx4g"
+    PATH = "${env.PATH}:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools"
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        git credentialsId: 'your-github-credentials-id', url: 'https://github.com/your/repo.git', branch: 'main'
+      }
+    }
+
+    stage('Build') {
+      steps {
+        sh './gradlew clean assembleRelease'
+      }
+    }
+
+    stage('Test') {
+      steps {
+        sh './gradlew test'
+      }
+    }
+
+    stage('Lint') {
+      steps {
+        sh './gradlew lint'
+      }
+    }
+
+    stage('Archive') {
+      steps {
+        archiveArtifacts artifacts: '**/build/outputs/**/*.apk', allowEmptyArchive: true
+      }
+    }
+  }
+
+  post {
+    always {
+      echo "Pipeline finished!"
+    }
+  }
+}
