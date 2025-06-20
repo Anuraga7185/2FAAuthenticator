@@ -84,7 +84,6 @@ public class OTPGenerateActivity extends AppCompatActivity {
                 Log.d("OTP GENERATE ACTIVITY", "EMPTY SECRET KEY    ");
                 return;
             }
-
             viewModel.insertAuthDetail(authDetail);
         } else {
             Log.d("OTP GENERATE ACTIVITY", "NO DATA");
