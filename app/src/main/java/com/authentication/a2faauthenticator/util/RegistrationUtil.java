@@ -13,7 +13,6 @@ public class RegistrationUtil {
         if (userName.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) return false;
         String user = Arrays.stream(existingUsers).filter(s -> s.equals(userName)).findAny().orElse(null);
         if (user != null) return false;
-
         if (!password.equals(confirmPassword)) return false;
         return password.length() >= 2;
     }
