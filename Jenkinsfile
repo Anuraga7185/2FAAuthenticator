@@ -10,7 +10,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git credentialsId: 'github-token', url: 'https://github.com/your/repo.git', branch: 'main'
+        git credentialsId: 'github-token', url: 'https://github.com/Anuraga7185/2FAAuthenticator', branch: 'main'
       }
     }
 
